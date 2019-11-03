@@ -8,78 +8,83 @@
 
 import Foundation
 
-var X: Int = 5;//объявляем переменную X с типом данных Int и равную 5
-print(X);//Вывести значения переменной X в консоле
-
-//Переменные подвержены изменениям.
-
-let Y = "Привет мир!" //объявляем константу Y которую имеет значение "Привет мир!"
-
-//_____Типы значений_____
-//Int - целочисленный тип (0, 1, ..., 25)
-//UInt - целочисленный тип, только с положительными значениями
-//Double - 64-битное число с плвающей точкой (1.25, 1.5, ..., 2345,347)
-//Float - 32-битное число с плавающей точкой
-//Bool - Логический тип (true или false)
-//Character - Символический тип
-//String - Строка (Любые значения)
-
-var intvalue = 5;
-var doublevalue = 3.25;
-var floatresult = Float(intvalue) + Float(doublevalue);
-print(floatresult);
-//Если необходимо сложить два числа, которые имеют разный тип значений, то необходимо при сложении привести их к единому типу
-
-//_____Коллекции:_____
-//1. Массив - это последовательность элементов определенного типа:
-//Array - Упорядоченный массив значений. Применение: Когда необходимо хранить данные в определенном порядке и извлекать по номеру позиции.
-//Dictionary (словарь) - Неупорядочная коллекция ключ-значение. Доступ по ключу. Применение: Когда порядок данных не важен, но важно извлекать по какому-либо признаку.
-//Set (множество) - Неупорядоченная коллекция уникальных значений. Быстрый поиск по значению. Операции над множествами. Применение: Когда порядок данных не важен, но нужно, чтобы данные были уникальны. Основная задача - проверка, содержит ли колекция определенное значение.
-
-//Array
-var array: [Int] = [1, 2, 3]; //объявляем переменную array с массивом Int и значениями: 5, 8 и 3
-array.append(4); //В переменную value добавляем новое значение - 4, индекс которого будет равнятся - 3
-array.remove(at: 0) //Удаляет значение в переменной array, стоящее на 0 месте
-print (array [1]); //вывести значение переменной array, индекс которого равен 3
-print (array);
-
-//Dictionary
-var dictionary = [1 : "Балашов Николай Александрович",
-                  2 : "Иванов Иван Иванович"]; //объявляем переменную-словарь dictionary c массивом int
-dictionary[2] = "Петров Петр Петрович"; //заменяем значение в переменной dictionary, у которого код - 2
-print (dictionary[2]); //Вывести значение переменной dictionary, которое имеет код - 2
-print (dictionary);
-
-//Set
-var firstset: Set = [1,2,3,4,5]; //объявляем переменную firstset с типом Set
-var secondset: Set = [3,4,5,6,7,8]; //объявляем переменную secondset с типом Set
-print (firstset.union(secondset)); //Вывести в консоле объединенные значения из переменных firstset и secondset
-print (firstset.intersection(secondset)); //Выводит в консоле значения, которые присутствуют в обе переменных
-print (firstset.subtracting(secondset)); //Выводит уникальные значения из переменной firstset
-print (firstset.symmetricDifference(secondset)); //Выводит уникальные значения из двух переменных: firstset и secondset
-
-//_____Опциональные значения_____
-//Опциональные значения - это тип значений, которые могут содержать значение nil(пустое значение)
-
-var intnilvalue: Int? = 5; //объявляем переменную intnilvalue с опциональным значением 5
-intnilvalue = nil; //изменяем значение 5 на nil в переменной intnilvalue
-print(intnilvalue);
-
-//var intresult = intvalue + intnilvalue!;
-
-//Варианты решения
-//1 Вариант (Проверять значение на наличии nil с помощью if)
-var intnilvalue1: Int? = nil;
-if intnilvalue1 != nil {
-    var intresult1 = intvalue + intnilvalue1!
-    print(intresult1);
-}
-else {
-    print ("Значение содержит значение nil");
+enum CollectionTypeCar: String {
+    case passengerCar
+    case motorcycle
 }
 
-//2 Вариант (Задать значение по умолчанию)
-var intnilvalue2: Int? = nil;
-var intresult2 = intvalue + (intnilvalue2 ?? 4);
-print (intresult2);
+enum CollectionColor: String {
+    case black
+    case white
+    case blackAndWhite
+}
+
+
+//Структура
+struct Car {
+    let id: Int?
+    var typeCar: CollectionTypeCar
+    var brand: String
+    var model: String
+    let color: CollectionColor
+    var automaticTransmission: String
+    var engine: String
+    private var serialNumber: Int
+    
+    var informationSerialNumber: Int {
+        get {
+            return serialNumber
+        }
+        set {
+            serialNumber = newValue
+        }
+    }
+    
+    var informationCar: String {
+        get {
+            return model + " " + brand
+        }
+    }
+    
+    mutating func DefinitionEngine (typeCar: CollectionTypeCar) {
+        switch typeCar {
+        case .passengerCar:
+            self.engine = "V6"
+        case .motorcycle:
+            self.engine = "GT3"
+        }
+        print("Детали автомобиля: " + brand + " " + engine)
+    }
+    
+    init (id: Int?, typeCar: CollectionTypeCar, brand: String, model: String, color: CollectionColor, automaticTransmission: String) {
+        self.id = id
+        self.typeCar = typeCar
+        self.brand = brand
+        self.model = model
+        self.color = color
+        self.automaticTransmission = automaticTransmission
+        self.engine = ""
+        self.serialNumber = 0 //дефолтное значение
+    }
+    
+}
+
+var carOne = Car(id: 0, typeCar: .passengerCar, brand: "Volvo", model: "S90", color: .black, automaticTransmission: "Avtomat")
+
+print (carOne)
+
+//var carOne = Car (id: 0, typeCar: .passengerCar, brand: "Volvo", model: "S90", color: .black, automaticTransmission: "Avtomat", engine: "", serialNumber: 35235235)
+//var carTwo = Car (id: 1, typeCar: .motorcycle, brand: "SUZUKI", model: "bandit", color: .blackAndWhite, automaticTransmission: "Avtomat", engine: "", serialNumber: 5747362346)
+
+
+carOne.DefinitionEngine(typeCar: .passengerCar)
+//carTwo.informationOutputCar = 11122233
+//print(carTwo.serialNumber)
+
+print("Марка и модель автомобиля: " + carOne.informationCar)
+
+
+
+
+
 
